@@ -1,60 +1,55 @@
 package com.alifalpian.projectfirebase.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.alifalpian.projectfirebase.R
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.alifalpian.projectfirebase.databinding.FragmentTambahBinding
+import com.alifalpian.projectfirebase.model.Mahasiswa
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TambahFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TambahFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    lateinit var binding : FragmentTambahBinding
+    lateinit var databaseRef : DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tambah, container, false)
+        binding = FragmentTambahBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TambahFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TambahFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        databaseRef = FirebaseDatabase.getInstance().getReference("mahasiswa")
+
+        binding.btnTambah.setOnClickListener{
+            addData()
+        }
+        binding.btnBack.setOnClickListener{
+            findNavController().navigateUp()
+        }
+    }
+
+    private fun addData() {
+        val nim = binding.inputNim.text.toString()
+        val nama = binding.inputNama.text.toString()
+        val kelas = binding.inputTelepon.text.toString()
+
+        val mhsId = databaseRef.push().key!!
+        val mahasiswaData = Mahasiswa(mhsId,nim, nama, kelas)
+        databaseRef.child(mhsId!!).setValue(mahasiswaData).addOnCompleteListener(){
+            Toast.makeText(requireContext(), "Data Berhasil Ditambahkan", Toast.LENGTH_SHORT).show()
+            findNavController().navigateUp()
+        }.addOnFailureListener{
+            Toast.makeText(requireContext(), "Data Gagal Ditambahkan", Toast.LENGTH_SHORT).show()
+        }
     }
 }

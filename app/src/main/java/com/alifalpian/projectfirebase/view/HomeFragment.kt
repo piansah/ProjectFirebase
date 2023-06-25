@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alifalpian.projectfirebase.R
 import com.alifalpian.projectfirebase.adapter.HomeAdapter
 import com.alifalpian.projectfirebase.databinding.FragmentHomeBinding
 import com.alifalpian.projectfirebase.model.Mahasiswa
@@ -50,5 +52,9 @@ class HomeFragment : Fragment() {
                 // Handle database error
             }
         })
+
+        binding.btnAdd.setOnClickListener{
+            findNavController().navigate(R.id.action_homeFragment_to_tambahFragment)
+        }
     }
 }
