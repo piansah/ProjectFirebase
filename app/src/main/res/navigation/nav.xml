@@ -34,5 +34,9 @@
         android:id="@+id/updateFragment"
         android:name="com.alifalpian.projectfirebase.view.UpdateFragment"
         android:label="fragment_update"
-        tools:layout="@layout/fragment_update" />
+        tools:layout="@layout/fragment_update" >
+        <action
+            android:id="@+id/action_updateFragment_self"
+            app:destination="@id/updateFragment" />
+    </fragment>
 </navigation>
