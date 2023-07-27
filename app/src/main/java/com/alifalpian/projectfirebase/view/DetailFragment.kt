@@ -8,12 +8,12 @@ import androidx.fragment.app.Fragment
 import com.alifalpian.projectfirebase.databinding.FragmentDetailBinding
 
 class DetailFragment : Fragment() {
-    lateinit var binding : FragmentDetailBinding
+    private lateinit var binding : FragmentDetailBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentDetailBinding.inflate(inflater, container, false)
         return binding.root
@@ -29,6 +29,5 @@ class DetailFragment : Fragment() {
         binding.txtnim.text = nim
         binding.txtnama.text = nama
         binding.txtTelepon.text = telepon
-
     }
 }
